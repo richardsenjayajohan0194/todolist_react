@@ -4,11 +4,11 @@ export const userSchema = z.object({
   name: z
     .string()
     .nonempty("Name is required")
-    .min(3, "Name should be at least 3 characters"),
+    .min(3, "Name should be at least 3 characters").optional(),
   username: z
     .string()
     .nonempty("Username is required")
-    .min(3, "Username should be at least 3 characters"),
+    .min(3, "Username should be at least 3 characters").optional(),
   email: z
     .string()
     .nonempty("Email is required")
