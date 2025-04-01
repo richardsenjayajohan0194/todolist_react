@@ -7,10 +7,11 @@ const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const next = require('next');
 const NextAuth = require('next-auth').default;
-const db = require('../utils/db.jsx');
+const { PrismaClient } = require('@prisma/client');
 // const { authOptions } = require('../app/api/auth/[...nextauth]/options.jsx'); // We'll create this file next
 
 const app = express();
+const prisma = new PrismaClient();
 const PORT = 3001;
 
 // Middleware setup
@@ -33,36 +34,50 @@ app.get('/', (req, res) => {
 });
 
 // User registration route
-app.post('/register', (req, res) => {
+app.post('/register',  async (req, res) => {
     const user = req.body;
 
     console.log('Received Data Register: ', user);
-    // res.status(200).send('Data received successfully!');
 
-    const query = "INSERT INTO users (name, username, email, password) VALUES (?, ?, ?, ?)";
-    const query2 = "SELECT * FROM users WHERE username = ?";
+    try {
+        const existingUser = await prisma.users.findUnique({
+            where: { 
+                username: user.username
+            },
+            select: {
+                username: true,
+                email: true,
+            }
+        });
 
-    // Check if the username already exists
-    db.query(query2, [user.username], (err, results) => {
-        if (err) {
-            console.error(err); // Log the error
-            return res.status(500).send({ message: "Database error" });
-        }
-        if (results.length > 0) {
+
+        if (existingUser) {
             return res.status(400).send({ message: "Username already exists" });
         }
-        if (results.length === 0) {
-            // Hash the password before storing it
-            const hashedPassword = bcrypt.hashSync(user.password, 10);
-            db.query(query, [user.name, user.username, user.email, hashedPassword], (err, insertResult) => {
-                if (err) {
-                    console.error(err); // Log the error
-                    return res.status(500).send({ message: "Database error" });
-                }
-                return res.status(200).send({ message: "Data Successfully Added to DB!", user: user });
-            });
+
+        const hashedPassword = bcrypt.hashSync(user.password, 10);
+
+        const newUser = await prisma.users.create({
+            data: {
+                name: user.name,
+                username: user.username,
+                email: user.email,
+                password: hashedPassword,
+            }
+        });
+    
+        if(newUser){
+            return res.status(200).send({ message: "Data Successfully Added to DB!", user: user });
+        } else {
+            return res.status(500).send({ message: "Database error" });
         }
-    });
+
+    } catch (error) {
+        console.error("Error connecting to the database:", error);
+        return res.status(500).send({ message: "Database connection error" });
+    }
+
+
 });
 
 // //use auth to login

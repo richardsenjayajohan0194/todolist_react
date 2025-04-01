@@ -1,27 +1,33 @@
-// import type { NextAuthOptions } from "next-auth";
-// import CredentialsProvider from "next-auth/providers/credentials";
+import NextAuth, { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcrypt";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
 
-// export const options: NextAuthOptions = {
-//     providers: [
-//         CredentialsProvider({
-//             name: "Credentials",
-//             credentials: {
-//                 email: { label: "Email", type: "text" },
-//                 password: { label: "Password", type: "password" },
-//             },
-//             async authorize(credentials, req) {
-//                 const query = "SELECT * FROM users WHERE email = ?";
-//                 const user = await db.query(query, [credentials?.email]);
+const prisma = new PrismaClient();
 
-//                 if (user.length > 0) {
-//                     const isValidPassword = bcrypt.compareSync(credentials? .password, user[0].password);
-//                     if (isValidPassword) {
-//                         return { id: user[0].id, email: user[0].email }; // Return user object
-//                     }
-//                 }
-//                 console.error("Invalid credentials");
-//                 return null; // Return null if credentials are invalid
-//             }
-//         }),
-//     ],
-// };
+export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials, req) {
+        
+      }
+    })
+  ],
+  session: {
+    strategy: "jwt",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV === "development",
+};
+
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST }
+
