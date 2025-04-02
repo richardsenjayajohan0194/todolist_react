@@ -40,7 +40,7 @@ const IndexLoginRegister = ({page_status}: Props) => {
     const Route = page_status === false ? "/register" : "/login";
     try {
       const response = await axios.post(
-        `http://localhost:3001${Route}`,
+        `http://localhost:3000/api/${Route}`,
         data,
         { withCredentials: true }
       );
