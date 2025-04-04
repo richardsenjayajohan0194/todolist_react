@@ -8,6 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema, FormSchema } from "./FormValidation"; // Import the schema
 import { useRouter } from 'next/navigation'
 import axios from "axios";
+import { useState } from "react";
+import { search } from "../../../utils/debounce";
 
 interface Props{
   page_status: boolean;
@@ -16,6 +18,7 @@ interface Props{
 const IndexLoginRegister = ({page_status}: Props) => {
   const router = useRouter();
 
+  const [massage, setMassage] = useState("");
   // Construct default values conditionally
   const defaultValues = {
     ...(page_status === false && {
@@ -40,7 +43,7 @@ const IndexLoginRegister = ({page_status}: Props) => {
     const Route = page_status === false ? "/register" : "/login";
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/${Route}`,
+        `/api${Route}`,
         data,
         { withCredentials: true }
       );
@@ -51,6 +54,7 @@ const IndexLoginRegister = ({page_status}: Props) => {
       console.error("Error posting data:", error);
       if (axios.isAxiosError(error)) {
         console.error("Axios error:", error.response?.data);
+        setMassage(error.response?.data.massage);
       } else {
         console.error("Unexpected error:", error);
       }
@@ -66,6 +70,7 @@ const IndexLoginRegister = ({page_status}: Props) => {
           control={control}
           render={({ field }) => (
             <Input
+              disable={true}
               {...field}
               classname="mt-2"
               type="text"
@@ -84,15 +89,18 @@ const IndexLoginRegister = ({page_status}: Props) => {
           control={control}
           render={({ field }) => (
             <Input
+              disable={false}
               {...field}
               classname="mt-2"
               type="text"
               label="Username"
               name_input="username"
               placeholder="Username"
-              error={errors.username?.message} // Pass the error message for the username field
+              error={errors.username?.message || massage } // Pass the error message for the username field
               onChange={(e) => {
                 field.onChange(e); // Call the original onChange from React Hook Form
+                  setMassage(""); // Clear the message when the user types
+                  search(e.target.value, setMassage, `api/register/checkusername`); // Call the debounced search function
               }}
             />
           )}
@@ -105,6 +113,7 @@ const IndexLoginRegister = ({page_status}: Props) => {
         control={control}
         render={({ field }) => (
           <Input
+            disable={true}
             {...field}
             classname="mt-2"
             type="email"
@@ -123,6 +132,7 @@ const IndexLoginRegister = ({page_status}: Props) => {
         control={control}
         render={({ field }) => (
           <Input
+            disable={true}
             {...field}
             classname="mt-2"
             type="password"

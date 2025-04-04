@@ -6,6 +6,7 @@ interface Props {
   placeholder: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // Accepts an event parameter
   error?: string;
+  disable: boolean;
 }
 
 const Input = ({
@@ -15,7 +16,8 @@ const Input = ({
   label,
   placeholder,
   onChange,
-  error
+  error,
+  disable,
 }: Props) => {
   console.log("Input Props:", {
     classname,
@@ -24,7 +26,16 @@ const Input = ({
     label,
     placeholder,
     error,
+    disable,
   });
+
+  // Create a handler that conditionally calls onChange
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!disable && onChange) {
+      onChange(e);
+    }
+  };
+
   return (
     <div className={classname}>
       <label htmlFor={name_input || type}>{label}</label>
@@ -33,7 +44,7 @@ const Input = ({
         name={name_input || type} // Use type as default if name_input is not provided
         placeholder={placeholder}
         className="form-control"
-        onChange={onChange} // Pass the onChange prop to the input
+        onChange={handleChange} // Pass the onChange prop to the input
       />
       {error && <small className="text-danger">{error}</small>} {/* Display error message */}
     </div>
