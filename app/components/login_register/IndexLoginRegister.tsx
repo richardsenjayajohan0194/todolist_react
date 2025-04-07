@@ -6,20 +6,21 @@ import ButtonLoginRegister from "../login_register/ButtonLoginRegister";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema, FormSchema } from "./FormValidation"; // Import the schema
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 import axios from "axios";
-import { useState } from "react";
-import { search } from "../../../utils/debounce";
+import { useState, useEffect } from "react";
+import search from "../../../utils/debounce";
 
-interface Props{
+interface Props {
   page_status: boolean;
 }
 
-const IndexLoginRegister = ({page_status}: Props) => {
+const IndexLoginRegister = ({ page_status }: Props) => {
   const router = useRouter();
 
   const [massage, setMassage] = useState("");
-  // Construct default values conditionally
+  const [username, setUsername] = useState("");
+
   const defaultValues = {
     ...(page_status === false && {
       name: "",
@@ -53,38 +54,50 @@ const IndexLoginRegister = ({page_status}: Props) => {
     } catch (error) {
       console.error("Error posting data:", error);
       if (axios.isAxiosError(error)) {
-        console.error("Axios error:", error.response?.data);
-        setMassage(error.response?.data.massage);
+        console.error("Axios error:", error.response ?.data);
+        setMassage(error.response?.data); // Update specific field
       } else {
         console.error("Unexpected error:", error);
       }
     }
   };
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (username) {
+        search(username, setMassage, `api/register/checkusername`); // Call the search function
+      }
+    }, 1000); // Debounce delay
+
+    console.log("Halo ini adalah username: ",username);
+
+    return () => {
+      clearTimeout(handler); // Cleanup the timeout on unmount or when username changes
+    };
+  }, [username, massage]);
+
+
   return (
     <FormLoginRegister onSubmit={handleSubmit(onSubmit)} page_status={page_status}>
       {page_status === false && (
         <>
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => (
-            <Input
-              disable={true}
-              {...field}
-              classname="mt-2"
-              type="text"
-              label="Name"
-              name_input="name"
-              placeholder="Name"
-              error={errors.name?.message} // Pass the error message for the name field
-              onChange={(e) => {
-                field.onChange(e); // Call the original onChange from React Hook Form
-              }}
-            />
-          )}
-        />
-        <Controller
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <Input
+                disable={true}
+                {...field}
+                classname="mt-2"
+                type="text"
+                label="Name"
+                name_input="name"
+                placeholder=" Name"
+                error={errors.name?.message} // Pass the error message for the name field
+              />
+            )}
+          />
+         <Controller
           name="username"
           control={control}
           render={({ field }) => (
@@ -96,18 +109,17 @@ const IndexLoginRegister = ({page_status}: Props) => {
               label="Username"
               name_input="username"
               placeholder="Username"
-              error={errors.username?.message || massage } // Pass the error message for the username field
+              error={errors.username?.message || massage} // Pass the error message for the username field
               onChange={(e) => {
                 field.onChange(e); // Call the original onChange from React Hook Form
-                  setMassage(""); // Clear the message when the user types
-                  search(e.target.value, setMassage, `api/register/checkusername`); // Call the debounced search function
+                setMassage("");
+                setUsername(e.target.value); // Update the username state
               }}
             />
           )}
         />
         </>
-      )
-      }
+      )}
       <Controller
         name="email"
         control={control}
@@ -121,9 +133,6 @@ const IndexLoginRegister = ({page_status}: Props) => {
             name_input="email"
             placeholder="Enter email"
             error={errors.email?.message} // Pass the error message for the email field
-            onChange={(e) => {
-              field.onChange(e); // Call the original onChange from React Hook Form
-            }}
           />
         )}
       />
@@ -140,9 +149,6 @@ const IndexLoginRegister = ({page_status}: Props) => {
             name_input="password"
             placeholder="Password"
             error={errors.password?.message} // Pass the error message for the password field
-            onChange={(e) => {
-              field.onChange(e); // Call the original onChange from React Hook Form
-            }}
           />
         )}
       />

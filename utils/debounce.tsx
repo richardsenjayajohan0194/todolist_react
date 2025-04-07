@@ -1,8 +1,7 @@
-import debounce from "lodash.debounce";
 import axios from "axios";
 
 // Create a debounced function
-export const search = debounce(async (reqData, setMassage: React.Dispatch<React.SetStateAction<string>>, api) => {
+const search = async (reqData: string, setMassage: React.Dispatch<React.SetStateAction<string>>, api: string) => {
   if (reqData) {
     try {
       const response = await axios.post(
@@ -22,4 +21,6 @@ export const search = debounce(async (reqData, setMassage: React.Dispatch<React.
     }
   }
   console.log(reqData);
-}, 1000);
+};
+
+export default search;

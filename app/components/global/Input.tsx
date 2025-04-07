@@ -1,3 +1,6 @@
+import debounce from "lodash.debounce";
+import { memo } from "react";
+
 interface Props {
   classname: string;
   type: string;
@@ -19,6 +22,7 @@ const Input = ({
   error,
   disable,
 }: Props) => {
+
   console.log("Input Props:", {
     classname,
     type,
@@ -29,12 +33,13 @@ const Input = ({
     disable,
   });
 
-  // Create a handler that conditionally calls onChange
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Create a debounced version of the onChange handler
+  const handleChange = debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!disable && onChange) {
       onChange(e);
     }
-  };
+  }, 1000);
+
 
   return (
     <div className={classname}>
@@ -44,11 +49,12 @@ const Input = ({
         name={name_input || type} // Use type as default if name_input is not provided
         placeholder={placeholder}
         className="form-control"
-        onChange={handleChange} // Pass the onChange prop to the input
+        onChange={handleChange} // Pass the debounced onChange to the input
       />
       {error && <small className="text-danger">{error}</small>} {/* Display error message */}
     </div>
   );
 };
 
-export default Input;
+// Export the memoized component
+export default memo(Input);
