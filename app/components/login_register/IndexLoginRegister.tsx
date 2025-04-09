@@ -8,8 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema, FormSchema } from "./FormValidation"; // Import the schema
 import { useRouter } from 'next/navigation';
 import axios from "axios";
-import { useState, useEffect } from "react";
-import search from "../../../utils/debounce";
 
 interface Props {
   page_status: boolean;
@@ -18,9 +16,7 @@ interface Props {
 const IndexLoginRegister = ({ page_status }: Props) => {
   const router = useRouter();
 
-  const [massage, setMassage] = useState("");
-  const [username, setUsername] = useState("");
-
+  // Construct default values conditionally
   const defaultValues = {
     ...(page_status === false && {
       name: "",
@@ -44,7 +40,7 @@ const IndexLoginRegister = ({ page_status }: Props) => {
     const Route = page_status === false ? "/register" : "/login";
     try {
       const response = await axios.post(
-        `/api${Route}`,
+        `http://localhost:3000/api/${Route}`,
         data,
         { withCredentials: true }
       );
@@ -54,8 +50,7 @@ const IndexLoginRegister = ({ page_status }: Props) => {
     } catch (error) {
       console.error("Error posting data:", error);
       if (axios.isAxiosError(error)) {
-        console.error("Axios error:", error.response ?.data);
-        setMassage(error.response?.data); // Update specific field
+        console.error("Axios error:", error.response?.data);
       } else {
         console.error("Unexpected error:", error);
       }
@@ -81,39 +76,38 @@ const IndexLoginRegister = ({ page_status }: Props) => {
     <FormLoginRegister onSubmit={handleSubmit(onSubmit)} page_status={page_status}>
       {page_status === false && (
         <>
-          <Controller
-            name="name"
-            control={control}
-            render={({ field }) => (
-              <Input
-                disable={true}
-                {...field}
-                classname="mt-2"
-                type="text"
-                label="Name"
-                name_input="name"
-                placeholder=" Name"
-                error={errors.name?.message} // Pass the error message for the name field
-              />
-            )}
-          />
-         <Controller
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <Input
+              {...field}
+              classname="mt-2"
+              type="text"
+              label="Name"
+              name_input="name"
+              placeholder="Name"
+              error={errors.name?.message} // Pass the error message for the name field
+              onChange={(e) => {
+                field.onChange(e); // Call the original onChange from React Hook Form
+              }}
+            />
+          )}
+        />
+        <Controller
           name="username"
           control={control}
           render={({ field }) => (
             <Input
-              disable={false}
               {...field}
               classname="mt-2"
               type="text"
               label="Username"
               name_input="username"
               placeholder="Username"
-              error={errors.username?.message || massage} // Pass the error message for the username field
+              error={errors.username?.message} // Pass the error message for the username field
               onChange={(e) => {
                 field.onChange(e); // Call the original onChange from React Hook Form
-                setMassage("");
-                setUsername(e.target.value); // Update the username state
               }}
             />
           )}
@@ -125,7 +119,6 @@ const IndexLoginRegister = ({ page_status }: Props) => {
         control={control}
         render={({ field }) => (
           <Input
-            disable={true}
             {...field}
             classname="mt-2"
             type="email"
@@ -141,7 +134,6 @@ const IndexLoginRegister = ({ page_status }: Props) => {
         control={control}
         render={({ field }) => (
           <Input
-            disable={true}
             {...field}
             classname="mt-2"
             type="password"

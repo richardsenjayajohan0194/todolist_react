@@ -1,11 +1,10 @@
 import HeaderForm from "../global/HeaderForm";
 import LinkLoginRegister from "./LinkLoginRegister";
-import { memo } from "react";
 
 interface Props {
   children: React.ReactNode; // Children elements to be rendered inside the form
   page_status: boolean;
-  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void; // Function to handle form submission
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void; // Function to handle form submission
 }
 
 const FormLoginRegister = ({ children, page_status, onSubmit }: Props) => {
@@ -36,4 +35,4 @@ const FormLoginRegister = ({ children, page_status, onSubmit }: Props) => {
   );
 };
 
-export default memo(FormLoginRegister);
+export default FormLoginRegister;
