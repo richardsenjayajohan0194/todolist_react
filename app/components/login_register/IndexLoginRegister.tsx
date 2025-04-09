@@ -7,7 +7,9 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema, FormSchema } from "./FormValidation"; // Import the schema
 import { useRouter } from 'next/navigation';
+import search from "@/utils/search";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 interface Props {
   page_status: boolean;
@@ -15,6 +17,9 @@ interface Props {
 
 const IndexLoginRegister = ({ page_status }: Props) => {
   const router = useRouter();
+
+  const [massage, setMassage] = useState("");
+  const [username, setUsername] = useState("");
 
   // Construct default values conditionally
   const defaultValues = {
@@ -46,6 +51,7 @@ const IndexLoginRegister = ({ page_status }: Props) => {
       );
       const res = await response.status;
       console.log("Response from server:", res);
+      console.log("hehe");
       router.push(Route === "/register" ? "/login" : "/register");
     } catch (error) {
       console.error("Error posting data:", error);
@@ -69,7 +75,7 @@ const IndexLoginRegister = ({ page_status }: Props) => {
     return () => {
       clearTimeout(handler); // Cleanup the timeout on unmount or when username changes
     };
-  }, [username, massage]);
+  }, [username]);
 
 
   return (
@@ -88,9 +94,9 @@ const IndexLoginRegister = ({ page_status }: Props) => {
               name_input="name"
               placeholder="Name"
               error={errors.name?.message} // Pass the error message for the name field
-              onChange={(e) => {
-                field.onChange(e); // Call the original onChange from React Hook Form
-              }}
+              // onChange={(e) => {
+              //   field.onChange(e); // Call the original onChange from React Hook Form
+              // }}
             />
           )}
         />
@@ -105,9 +111,11 @@ const IndexLoginRegister = ({ page_status }: Props) => {
               label="Username"
               name_input="username"
               placeholder="Username"
-              error={errors.username?.message} // Pass the error message for the username field
+              error={errors.username?.message || massage} // Pass the error message for the username field
               onChange={(e) => {
                 field.onChange(e); // Call the original onChange from React Hook Form
+                setMassage("");
+                setUsername(e.target.value);
               }}
             />
           )}
@@ -126,6 +134,9 @@ const IndexLoginRegister = ({ page_status }: Props) => {
             name_input="email"
             placeholder="Enter email"
             error={errors.email?.message} // Pass the error message for the email field
+            // onChange={(e) => {
+            //   field.onChange(e); // Call the original onChange from React Hook Form
+            // }}
           />
         )}
       />
@@ -141,6 +152,9 @@ const IndexLoginRegister = ({ page_status }: Props) => {
             name_input="password"
             placeholder="Password"
             error={errors.password?.message} // Pass the error message for the password field
+            // onChange={(e) => {
+            //   field.onChange(e); // Call the original onChange from React Hook Form
+            // }}
           />
         )}
       />

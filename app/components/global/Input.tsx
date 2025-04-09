@@ -7,7 +7,7 @@ interface Props {
   name_input?: string;
   label: string;
   placeholder: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // Accepts an event parameter
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // Accepts an event parameter
   error?: string;
 }
 
@@ -18,9 +18,8 @@ const Input = ({
   label,
   placeholder,
   onChange,
-  error
+  error,
 }: Props) => {
-
   console.log("Input Props:", {
     classname,
     type,
@@ -29,6 +28,14 @@ const Input = ({
     placeholder,
     error,
   });
+
+  // Create a debounced version of the onChange handler
+  const handleChange = debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onChange) {
+      onChange(e); // Call onChange if it's defined
+    }
+  }, 1000);
+
   return (
     <div className={classname}>
       <label htmlFor={name_input || type}>{label}</label>
@@ -37,11 +44,11 @@ const Input = ({
         name={name_input || type} // Use type as default if name_input is not provided
         placeholder={placeholder}
         className="form-control"
-        onChange={onChange} // Pass the onChange prop to the input
+        onChange={handleChange} // Only assign handleChange if not disabled
       />
       {error && <small className="text-danger">{error}</small>} {/* Display error message */}
     </div>
   );
 };
 
-export default Input;
+export default memo(Input);
