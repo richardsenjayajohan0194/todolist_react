@@ -6,7 +6,7 @@ const search = async (reqData: string, setMassage: React.Dispatch<React.SetState
     try {
       const response = await axios.post(
         api,
-        { username: reqData },
+        { email: reqData },
         { withCredentials: true }
       );
       console.log("API Response:", response.data);

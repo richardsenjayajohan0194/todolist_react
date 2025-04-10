@@ -5,11 +5,11 @@ const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
     const body = await request.json();
-    const { username } = body;
+    const { email } = body;
 
     const exist = await prisma.users.findUnique({
         where: {
-            username: username
+            email: email
         },
         select: {
             username: true,
@@ -18,8 +18,8 @@ export async function POST(request: Request) {
     });
 
     if(exist){
-        return new NextResponse("user already exists", { status: 400 })
+        return new NextResponse("Email already exists", { status: 400 })
     }
 
-    return NextResponse.json(username);
+    return NextResponse.json(email);
 }
