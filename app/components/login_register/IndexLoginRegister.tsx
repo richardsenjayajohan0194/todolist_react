@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import search from "@/utils/search";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { signIn } from "next-auth/react";
 
 interface Props {
   page_status: boolean;
@@ -17,6 +18,7 @@ interface Props {
 
 const IndexLoginRegister = ({ page_status }: Props) => {
   const router = useRouter();
+
 
   const [massage, setMassage] = useState("");
   const [email, setEmail] = useState("");
@@ -62,23 +64,40 @@ const IndexLoginRegister = ({ page_status }: Props) => {
     }
   };
 
+  const loginUser = async (data: FormSchema) => {
+    console.log("Form Data:", data);
+    const result = await signIn('credentials', {
+      ...data,
+      redirect: false,
+    });
+    
+    if(result?.error){
+      console.error("Login failed:", result.status);
+      // Handle login error (e.g., show a message to the user)
+    } else {
+      router.push("/dashboard")
+    }
+  }
+
   useEffect(() => {
-    const handler = setTimeout(() => {
-      if (email) {
-        search(email, setMassage, `api/register/checkemail`); // Call the search function
-      }
-    }, 1000); // Debounce delay
+    if (page_status === false) {
+      const handler = setTimeout(() => {
+        if (email) {
+          search(email, setMassage, `api/register/checkemail`); // Call the search function
+        }
+      }, 1000); // Debounce delay
 
-    console.log("Halo ini adalah email: ",email);
+      console.log("Halo ini adalah email: ", email);
 
-    return () => {
-      clearTimeout(handler); // Cleanup the timeout on unmount or when username changes
-    };
-  }, [email]);
+      return () => {
+        clearTimeout(handler); // Cleanup the timeout on unmount or when email changes
+      };
+    }
+  }, [email, page_status]); // Add email and page_status to the dependency array
 
 
   return (
-    <FormLoginRegister onSubmit={handleSubmit(onSubmit)} page_status={page_status}>
+    <FormLoginRegister onSubmit={handleSubmit(page_status === false ? onSubmit : loginUser)} page_status={page_status}>
       {page_status === false && (
         <>
         <Controller
