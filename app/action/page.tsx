@@ -1,9 +1,13 @@
-import MainLayout from "../components/dashboard/MainLayout";
 import AddContent from "../components/global/AddContent";
-export default function Dashboard() {
+import MainLayout from "../components/dashboard/MainLayout";
+
+
+export default function Action() {
   return (
+    <>
     <MainLayout>
       <AddContent /> {/* Correctly closed the AddContent component */}
     </MainLayout>
+    </>
   );
 }

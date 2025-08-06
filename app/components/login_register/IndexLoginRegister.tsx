@@ -132,7 +132,7 @@ const IndexLoginRegister = ({ page_status }: Props) => {
               error={errors.username?.message} // Pass the error message for the username field
               onChange={(e) => {
                 field.onChange(e); // Call the original onChange from React Hook Form
-               }}
+              }}
             />
           )}
         />

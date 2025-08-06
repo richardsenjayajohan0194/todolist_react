@@ -2,25 +2,28 @@
 
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import Navbar from "./Navbar";
+import { memo, useCallback } from "react";
+import UserMenu from "./UserMenu";
 
-export default function UserInfo() {
+const UserInfo = memo(function UserInfo() {
   const { data: session } = useSession();
 
-  const handleSignOut = async () => {
+  // useCallback to memoize handleSignOut so it doesn't change on every render
+  const handleSignOut = useCallback(async () => {
     try {
       await signOut({ callbackUrl: '/' });
     } catch (error) {
-      console.error("Error signing out:", error);
+      console.error("Error signing out:", error); 
     }
-  };
+  }, []);
 
   console.log("Session", typeof session);
 
   return (
     <>
-   
-    <Navbar session={session} handleSignOut={handleSignOut}/>
+      <UserMenu session={session} handleSignOut={handleSignOut} />
     </>
   );
-}
+});
+
+export default UserInfo;
