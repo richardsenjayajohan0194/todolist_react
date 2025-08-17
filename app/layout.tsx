@@ -4,7 +4,6 @@ import { AuthProvider } from "@/libs/auth-libs";
 import "../style/globals.scss";
 import Bootstrap from '@/app/components/global/Bootstrap'
 
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -31,7 +30,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Bootstrap/>
-        <AuthProvider>{children}</AuthProvider>
+        
+        <AuthProvider>
+          {children}
+        </AuthProvider>
         
       </body>
     </html>

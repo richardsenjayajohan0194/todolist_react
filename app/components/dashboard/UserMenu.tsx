@@ -1,4 +1,3 @@
-import React from "react";
 import { Session } from "next-auth";
 
 interface Props {
@@ -7,7 +6,8 @@ interface Props {
 }
 
 const UserMenu = ({ session, handleSignOut }: Props) => {
-    console.log("UserMenu Session: ", session?.user);
+    // console.log("UserMenu Session: ", session?.user);
+
     return (
         <div className="ms-auto p-2 bd-highlight">
         <li className="nav-item dropdown d-flex flex-fill ">
@@ -27,5 +27,4 @@ const UserMenu = ({ session, handleSignOut }: Props) => {
     );
 };
 
-// Wrap the UserMenu component with memo
-export default React.memo(UserMenu);
+export default UserMenu;

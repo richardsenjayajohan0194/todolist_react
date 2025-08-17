@@ -65,7 +65,7 @@ const IndexLoginRegister = ({ page_status }: Props) => {
   };
 
   const loginUser = async (data: FormSchema) => {
-    console.log("Form Data:", data);
+    console.log("Form Data sign in:", data);
     const result = await signIn('credentials', {
       ...data,
       redirect: false,

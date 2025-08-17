@@ -1,11 +1,20 @@
 'use client'
-import React, { memo } from "react"; // Import memo from React
 import NavbarLinks from "./NavbarLinks";
-import UserInfo from "./UserInfo";
+import UserMenu from "./UserMenu";
+import { useContext, useMemo } from "react";
+import { UserSessionContext } from "./UserInfo"; // Import the context
 
 
-const Navbar = memo(function Navbar() {
+const Navbar = () => {
   console.log("Session Nav: ", "No session in Navbar");
+
+  const userContext = useContext(UserSessionContext);
+
+  useMemo(() => {
+    console.log("UserContext in Navbar: ", userContext?.session?.user);
+    
+  }, [userContext]);
+  // console.log("UserContext in Navbar: ", userContext?.session?.user);
 
   return (
     <>
@@ -17,13 +26,15 @@ const Navbar = memo(function Navbar() {
           </button>
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <NavbarLinks />
-            <UserInfo />
+            <UserMenu
+              session={userContext?.session}
+              handleSignOut={userContext?.handleSignOut ?? (async () => {})}
+            />
           </div>
         </div>
       </nav>
     </>
   );
-});
+};
 
-// Export the memoized Navbar component
 export default Navbar;
