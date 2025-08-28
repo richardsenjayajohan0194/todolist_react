@@ -1,9 +1,11 @@
-import AddContent from "@/app/components/global/AddContent";
+// import AddContent from "@/app/components/global/AddContent";
 
-export default function Dashboard() {
-  return (
-    <>
-    <AddContent/>
-    </>
-  );
+const Dashboard = () => {
+    return (
+        <>
+            {/* <AddContent/> */}
+        </>
+    );
 }
+
+export default Dashboard;

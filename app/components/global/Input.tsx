@@ -29,7 +29,7 @@ const Input = ({
     error,
   });
 
-  // Create a debounced version of the onChange handler
+  //Create a debounced version of the onChange handler
   const handleChange = debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(e); // Call onChange if it's defined

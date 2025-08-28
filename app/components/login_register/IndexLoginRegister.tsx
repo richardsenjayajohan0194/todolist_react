@@ -42,6 +42,7 @@ const IndexLoginRegister = ({ page_status }: Props) => {
     defaultValues,
   });
 
+  //For Register Account
   const onSubmit = async (data: FormSchema) => {
     console.log("Form Data:", data);
     const Route = page_status === false ? "/register" : "/login";
@@ -64,6 +65,7 @@ const IndexLoginRegister = ({ page_status }: Props) => {
     }
   };
 
+  //For Login Account
   const loginUser = async (data: FormSchema) => {
     console.log("Form Data sign in:", data);
     const result = await signIn('credentials', {
@@ -79,6 +81,7 @@ const IndexLoginRegister = ({ page_status }: Props) => {
     }
   }
 
+  //For Check email is exist or not
   useEffect(() => {
     if (page_status === false) {
       const handler = setTimeout(() => {
@@ -130,9 +133,9 @@ const IndexLoginRegister = ({ page_status }: Props) => {
               name_input="username"
               placeholder="Username"
               error={errors.username?.message} // Pass the error message for the username field
-              onChange={(e) => {
-                field.onChange(e); // Call the original onChange from React Hook Form
-              }}
+              // onChange={(e) => {
+              //   field.onChange(e); // Call the original onChange from React Hook Form
+              // }}
             />
           )}
         />
