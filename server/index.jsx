@@ -34,40 +34,23 @@ app.get('/', (req, res) => {
 });
 
 // User registration route
-app.post('/register',  async (req, res) => {
-    const user = req.body;
+app.post('/action',  async (req, res) => {
+    const {data} = req.body;
 
-    console.log('Received Data Register: ', user);
+    console.log('Received Data : ', data.title);
 
     try {
-        const existingUser = await prisma.users.findUnique({
-            where: { 
-                username: user.username
-            },
-            select: {
-                username: true,
-                email: true,
-            }
-        });
-
-
-        if (existingUser) {
-            return res.status(400).send({ message: "Username already exists" });
-        }
-
-        const hashedPassword = bcrypt.hashSync(user.password, 10);
-
-        const newUser = await prisma.users.create({
+        const newToDo = await prisma.todoLists.create({
             data: {
-                name: user.name,
-                username: user.username,
-                email: user.email,
-                password: hashedPassword,
+                userId: data.userId,
+                title: data.title,
+                content: data.content,
             }
         });
-    
-        if(newUser){
-            return res.status(200).send({ message: "Data Successfully Added to DB!", user: user });
+        
+        console.log("Data prisma: ", newToDo);
+        if(newToDo){
+            return res.status(200).send({ message: "Data Successfully Added to DB from server!", data: newToDo });
         } else {
             return res.status(500).send({ message: "Database error" });
         }

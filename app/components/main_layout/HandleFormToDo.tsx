@@ -1,36 +1,27 @@
-// handleFormSubmit.ts
-import { FormEvent } from "react";
-import { toDoSchema, FormSchema } from "../main_layout/FormValidationToDo";
+import { toDoSchema } from "./FormValidationToDo";
+import UseToastAxios from "./UseToastAxios";
 
-export const HandleFormToDo = (
-    e: FormEvent<HTMLFormElement>,
-    usetoast: () => void,
-    setErrorMessages: (messages: string[]) => void
-) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const title = formData.get('title');
-    const content = formData.get('content');
+const handleFormToDo = async (prevState: unknown, formData: FormData, userId: string) => {
+  console.log("Datanya adalah: ", formData);
+  
 
-    const dataToValidate = {
-        title: title ? title.toString() : '',
-        content: content ? content.toString() : ''
-    };
+  const dataToValidate = {
+      userId: userId,
+      title: formData.get('title'),
+      content: formData.get('content'),
+  };
+  
+  console.log("Type of this data: ", typeof dataToValidate);
 
-    console.log("Data Content: ", dataToValidate);
+  const result = await toDoSchema.safeParse(dataToValidate);
 
-    // Validate the data using Zod's safeParse
-    const result = toDoSchema.safeParse(dataToValidate);
-    
-    if (result.success) {
-        const validatedData: FormSchema = result.data;
-        console.log(validatedData.title, validatedData.content);
-        usetoast();
-        setErrorMessages([]); // Clear previous errors
-    } else {
-        console.log("Validation errors:", result.error.errors);
-        const errorMessages = result.error.errors.map(err => [err.path, err.message]);
-        console.log(`Error Messages: ${errorMessages}`);
-        // setErrorMessages(errorMessages); // Set error messages
-    }
-};
+  if(!result.success){
+      console.log(result.error.flatten().fieldErrors);
+      return {error: result.error.flatten().fieldErrors};
+  }
+
+
+  UseToastAxios("http://localhost:3001/action", dataToValidate);
+}
+
+export default handleFormToDo;

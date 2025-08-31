@@ -1,22 +1,19 @@
 import React from "react";
-import { UseFormRegister, FieldValues } from "react-hook-form";
 
 interface Props {
     label: string;
     name: string;
-    register: ReturnType<UseFormRegister<FieldValues>>; // Adjust the type according to your form schema
     placeholder?: string;
     type?: string;
     error?: string;
     area: boolean;
 }
-const InputField = ({ label, name, register, placeholder, type, error, area }:Props) => {
+const InputField = ({ label, name, placeholder, type, area, error }:Props) => {
     return (
         <div>
             <label>{label}</label>
             {area === false ? (
                 <input
-                    {...register} // Register the input with react-hook-form
                     name={name}
                     type={type}
                     placeholder={placeholder}
@@ -24,13 +21,12 @@ const InputField = ({ label, name, register, placeholder, type, error, area }:Pr
                 />
             ) : (
                 <textarea
-                    {...register} // Register the input with react-hook-form
                     name={name}
                     placeholder={placeholder}
-                    className="form-control"
+                    className="form-control h-50"
                 />
             )}
-            {error && <small className="text-danger">{error}</small>} {/* Display error message */}
+            {error && <small className="text-danger">{error}</small>} 
         </div>
     );
 };
