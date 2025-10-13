@@ -1,7 +1,7 @@
 import IndexLoginRegister from "../components/login_register/IndexLoginRegister";
 
-const Register = () => {
+const Login = () => {
   return <IndexLoginRegister page_status={true}/>
 };
 
-export default Register;
+export default Login;

@@ -13,7 +13,7 @@ const NavLinks = React.memo(function NavLinks() {
         <Link className={`nav-link ${pathname === '/action' ? 'active' : ''}`} href="/action">Action</Link>
         </li>
         <li className="nav-item">
-        <Link className="nav-link" href="#">Preview</Link>
+        <Link className={`nav-link ${pathname === '/preview' ? 'active' : ''}`} href="/preview">Preview</Link>
         </li>
     </ul>
   );

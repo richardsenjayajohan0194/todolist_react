@@ -1,7 +1,9 @@
+import { memo } from "react";
+
 interface Props {
   classname: string;
   button_name: string;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 const Button = ({
@@ -9,7 +11,7 @@ const Button = ({
   button_name,
   disabled,
 }: Props) => {
-
+  console.log("Button Render");
   return (
     <div className={classname}>
       <button className="btn btn-primary" type="submit" disabled={disabled}>
@@ -19,4 +21,4 @@ const Button = ({
   );
 };
 
-export default Button;
+export default memo(Button);

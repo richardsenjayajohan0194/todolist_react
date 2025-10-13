@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AuthProvider } from "@/libs/auth-libs";
+import "../style/globals.css";
 import "../style/globals.scss";
 import Bootstrap from '@/app/components/global/Bootstrap'
 
@@ -33,7 +34,6 @@ export default function RootLayout({
         <AuthProvider>
           {children}
         </AuthProvider>
-        
       </body>
     </html>
   );

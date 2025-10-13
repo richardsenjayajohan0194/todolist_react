@@ -63,6 +63,33 @@ app.post('/action',  async (req, res) => {
 
 });
 
+app.get('/preview', async (req, res) => {
+    try {
+        const getToDoList = await prisma.todoLists.findMany({
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                users: {
+                    select: {
+                        name: true,
+                    }
+                }
+            },
+        });
+        console.log("Data ToDOList: ", getToDoList);
+
+        if(getToDoList){
+            return res.status(200).json(getToDoList);
+        } else {
+            return res.status(404).send({ message: "No data found" });
+        }
+    } catch(error){
+        console.error("Error connecting to the database:", error);
+        return res.status(500).send({ message: "Database connection error" });
+    }
+});
+
 // //use auth to login
 // server.use('/api/auth', (req, res) => NextAuth(req, res, authOptions));
 

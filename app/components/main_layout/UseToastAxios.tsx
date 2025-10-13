@@ -28,6 +28,7 @@ const UseToastAxios = async (apiUrl: string, data: object) => {
         isLoading: false,
         autoClose: 3000,
       });
+      return error;
     } else {
       console.log("Unexpected error:", error);
     }

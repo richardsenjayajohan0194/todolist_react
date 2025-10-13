@@ -17,6 +17,7 @@ interface Props {
 }
 
 const IndexLoginRegister = ({ page_status }: Props) => {
+  console.log("IndexLoginRegister rendered");
   const router = useRouter();
 
 
@@ -36,10 +37,11 @@ const IndexLoginRegister = ({ page_status }: Props) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+      formState: { errors },
   } = useForm<FormSchema>({
     resolver: zodResolver(userSchema), // Use Zod schema for validation
     defaultValues,
+    reValidateMode: "onSubmit",
   });
 
   //For Register Account
@@ -98,7 +100,7 @@ const IndexLoginRegister = ({ page_status }: Props) => {
     }
   }, [email, page_status]); // Add email and page_status to the dependency array
 
-
+  console.log("Page status hello");
   return (
     <FormLoginRegister onSubmit={handleSubmit(page_status === false ? onSubmit : loginUser)} page_status={page_status}>
       {page_status === false && (
@@ -179,7 +181,7 @@ const IndexLoginRegister = ({ page_status }: Props) => {
           />
         )}
       />
-      <ButtonLoginRegister classname="d-grid mt-2" button_name={"Register "} />
+      <ButtonLoginRegister classname="d-grid mt-2" button_name={"Register "}/>
     </FormLoginRegister>
   );
 };

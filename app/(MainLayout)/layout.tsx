@@ -1,7 +1,8 @@
 
-import UserInfo from "../components/dashboard/UserInfo";
 import Navbar from "../components/dashboard/Navbar";
-import AddContent from "../components/global/AddContent";
+import UserInfo from "../components/dashboard/UserInfo";
+
+// import AddContent from "../components/global/AddContent";
 
 interface Props {
     children: React.ReactNode;
@@ -13,8 +14,7 @@ const Layout = ({ children }:Props) => {
     return (
         <>
             <UserInfo>
-            <Navbar />
-            <AddContent/>
+            <Navbar/>
             {children}
             </UserInfo>
         </>

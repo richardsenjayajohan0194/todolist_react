@@ -1,20 +1,17 @@
 'use client'
+import { UseUserSession } from "../global/UseUserSession";
 import NavbarLinks from "./NavbarLinks";
 import UserMenu from "./UserMenu";
-import { useContext, useMemo } from "react";
-import { UserSessionContext } from "./UserInfo"; // Import the context
-
+import { memo } from "react";
 
 const Navbar = () => {
-  console.log("Session Nav: ", "No session in Navbar");
 
-  const userContext = useContext(UserSessionContext);
+  // const userContext = useContext(UserSessionContext);
+  // console.log("Navbar Rendered", userContext?.session?.user);
+  const { session } = UseUserSession();
+  console.log("Navbar Rendered", session?.user);
 
-  useMemo(() => {
-    console.log("UserContext in Navbar: ", userContext?.session?.user);
-    
-  }, [userContext]);
-  // console.log("UserContext in Navbar: ", userContext?.session?.user);
+  // Removed useEffect referencing undefined userContext
 
   return (
     <>
@@ -26,10 +23,7 @@ const Navbar = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <NavbarLinks />
-            <UserMenu
-              session={userContext?.session}
-              handleSignOut={userContext?.handleSignOut ?? (async () => {})}
-            />
+              <UserMenu/>
           </div>
         </div>
       </nav>
@@ -37,4 +31,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default memo(Navbar);

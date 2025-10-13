@@ -1,27 +1,28 @@
 import { toDoSchema } from "./FormValidationToDo";
 import UseToastAxios from "./UseToastAxios";
 
-const handleFormToDo = async (prevState: unknown, formData: FormData, userId: string) => {
-  console.log("Datanya adalah: ", formData);
-  
+const handleFormToDo = async (data: { title: string; content: string }, userId: string) => {
+  console.log("Datanya adalah: ", data);
 
   const dataToValidate = {
-      userId: userId,
-      title: formData.get('title'),
-      content: formData.get('content'),
+    title: data.title,
+    content: data.content,
   };
-  
+
   console.log("Type of this data: ", typeof dataToValidate);
 
-  const result = await toDoSchema.safeParse(dataToValidate);
+  const result = toDoSchema.safeParse(dataToValidate);
 
-  if(!result.success){
-      console.log(result.error.flatten().fieldErrors);
-      return {error: result.error.flatten().fieldErrors};
+  if (!result.success) {
+    console.log(result.error.flatten().fieldErrors);
+    return { error: result.error.flatten().fieldErrors };
+  } else {
+    const payload = {
+      userId: userId,
+      ...dataToValidate,
+    };
+    return UseToastAxios("http://localhost:3001/action", payload);
   }
-
-
-  UseToastAxios("http://localhost:3001/action", dataToValidate);
 }
 
 export default handleFormToDo;
