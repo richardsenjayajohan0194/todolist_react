@@ -9,8 +9,8 @@ interface Props {
 
 const FormLoginRegister = ({ children, page_status, onSubmit }: Props) => {
   return (
-    <div className="login template d-flex justify-content-center align-items-center vh-100 bg-primary">
-      <div className="w-45 p-5 rounded bg-white">
+    <div className="template tw-flex tw-justify-center tw-items-center tw-h-screen tw-bg-blue-500">
+      <div className="tw-w-[45] tw-p-12 tw-rounded tw-bg-white">
         {page_status === true ? (
           <HeaderForm tag_header="h1" header={"Login"} />
         ) : (

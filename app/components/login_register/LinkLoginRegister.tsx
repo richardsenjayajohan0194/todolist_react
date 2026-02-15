@@ -9,8 +9,8 @@ interface Props{
 const LinkLoginRegister = ({src, sentence, link_sentence}: Props) => {
     return (
       <>
-      <p className="text-center">
-        <small className="d-block text-center mt-2">
+      <p className="tw-text-center">
+        <small className="tw-block tw-text-center tw-mt-2">
           {sentence} <Link href={src}>{link_sentence}</Link>
         </small>
       </p>
