@@ -64,23 +64,56 @@ app.post('/action',  async (req, res) => {
 });
 
 app.get('/preview', async (req, res) => {
+    const { limit, page } = req.query;
+
     try {
-        const getToDoList = await prisma.todoLists.findMany({
-            select: {
-                id: true,
-                title: true,
-                content: true,
-                users: {
-                    select: {
-                        name: true,
+        // const getToDoList = await prisma.todoLists.findMany({
+        //     take: parseInt(limit) || 5,
+        //     // where: {
+        //     //     id: {
+        //     //         ...(cursorId < 0 && {
+        //     //             lt: cursorId,
+        //     //         }),
+        //     //          ...(cursorId > 0 && {
+        //     //             gt: cursorId,
+        //     //         })
+        //     //     },
+        //     // },
+        //     skip: parseInt(limit * (page - 1)) || 0,
+        //     select: {
+        //         id: true,
+        //         title: true,
+        //         content: true,
+        //         users: {
+        //             select: {
+        //                 name: true,
+        //             }
+        //         }
+        //     },
+        //     // _count: true,
+        // });
+
+        const [getToDoList, totalCountData] = await prisma.$transaction([
+            prisma.todoLists.findMany({
+                take: parseInt(limit) || 5,
+                skip: parseInt(limit * (page - 1)) || 0,
+                select: {
+                    id: true,
+                    title: true,
+                    content: true,
+                    users: {
+                        select: {
+                            name: true,
+                        }
                     }
-                }
-            },
-        });
-        console.log("Data ToDOList: ", getToDoList);
+                },
+            }),
+            prisma.todoLists.count(),
+        ]);
+        console.log("Data ToDOList: ", getToDoList, totalCountData);
 
         if(getToDoList){
-            return res.status(200).json(getToDoList);
+            return res.status(200).json({getToDoList: getToDoList, totalCountData: totalCountData});
         } else {
             return res.status(404).send({ message: "No data found" });
         }

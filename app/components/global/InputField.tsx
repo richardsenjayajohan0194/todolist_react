@@ -5,6 +5,7 @@ interface Props {
   label: string;
   placeholder?: string;
   name?: string;
+  value?: string;
   // type?: string;
   classname: string;
   error?: string;
@@ -12,14 +13,16 @@ interface Props {
   area: boolean;
 }
 
-const InputField = ({ label, placeholder, register, area, error, name, classname }: Props) => {
+const InputField = ({ label, placeholder, register, area, error, name, classname, value }: Props) => {
   console.log("InputField Props:", {
     // type,
     name,
     label,
+    value,
     placeholder,
     error,
   });
+
     return (
       <div className={classname}>
         <label>{label}</label>
@@ -28,12 +31,14 @@ const InputField = ({ label, placeholder, register, area, error, name, classname
             {...register}
             name={name}
             // type={type}
+            value={value}
             placeholder={placeholder}
             className="form-control"
           />
         ) : (
           <textarea
             {...register}
+            value={value}
             placeholder={placeholder}
             className="form-control h-50"
           />

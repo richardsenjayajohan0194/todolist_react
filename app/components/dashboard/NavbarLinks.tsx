@@ -1,22 +1,21 @@
-import React from "react";
+"use client"
+import React, { memo } from "react";
 import Link from "next/link";
+import { userNavbarLinks } from "@/app/components/navigation/constant-navigation";
 import { usePathname } from "next/navigation";
 
-const NavLinks = React.memo(function NavLinks() {
+const NavLinks = () => {
   const pathname = usePathname();
+
   return (
     <ul className="navbar-nav d-flex flex-fill align-items-center justify-content-center">
-        <li className="nav-item">
-        <Link className={`nav-link ${pathname === '/dashboard' ? 'active' : ''}`} aria-current="page" href="/dashboard">Dashboard</Link>
-        </li>
-        <li className="nav-item">
-        <Link className={`nav-link ${pathname === '/action' ? 'active' : ''}`} href="/action">Action</Link>
-        </li>
-        <li className="nav-item">
-        <Link className={`nav-link ${pathname === '/preview' ? 'active' : ''}`} href="/preview">Preview</Link>
-        </li>
+        {userNavbarLinks.map((links) => (
+          <li className="nav-item" key={links.href}>
+            <Link key={links.href} className={`nav-link ${pathname === links.href ? 'active' : ''}`} aria-current="page" href={links.href} prefetch={false}>{links.label}</Link>
+          </li>
+        ))}
     </ul>
   );
-});
+};
 
-export default NavLinks;
+export default memo(NavLinks);

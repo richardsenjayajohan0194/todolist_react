@@ -52,7 +52,7 @@ const PaginationLink = ({
         variant: isActive ? "outline" : "ghost",
         size,
       }),
-      className
+      className, "tw-text-stone-700 tw-no-underline border-2 "
     )}
     {...props}
   />

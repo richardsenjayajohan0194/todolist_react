@@ -15,6 +15,11 @@ export type Users =  {
   name: string
 }
 
+export type ToDoListResponse = {
+  getToDoList: ToDoList[];
+  totalCountData: number;
+}
+
 export const columns: ColumnDef<ToDoList>[] = [
   {
     accessorKey: "id",

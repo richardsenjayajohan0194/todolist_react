@@ -1,15 +1,18 @@
-
+// auth.ts (or auth.tsx if you prefer, but .ts is more appropriate for config files)
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
+import type { NextAuthOptions, User } from "next-auth";
+
 
 const prisma = new PrismaClient();
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   pages: {
     signOut: '/login',
+    signIn: '/login'
   },
   providers: [
     CredentialsProvider({
@@ -18,7 +21,7 @@ export const authOptions = {
         email: { label: "email", type: "email", placeholder: "halo@gmail.com" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials) {
+      async authorize(credentials): Promise<User | null> {
         if (!credentials?.email || !credentials.password) {
           return null;
         }
@@ -50,22 +53,22 @@ export const authOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user, session }){
+    async jwt({ token, user, session }) {
       console.log("jwt callback", { token, user, session });
 
-      //pass in user id and name to token
-      if(user){
+      // Pass in user id and name to token
+      if (user) {
         return {
           ...token,
           id: user.id,
-          username: user.username,
+          username: user.name, // Assuming user.name is username
         };
       }
       return token;
     },
-    async session({ session, token, user }){
+    async session({ session, token, user }) {
       console.log("session callback", { session, token, user });
-      //pass in user id and username to session
+      // Pass in user id and username to session
       return {
         ...session,
         user: {
@@ -74,10 +77,8 @@ export const authOptions = {
           username: token.username
         }
       };
-      return session;
     }
   },
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === "development",
 };
-

@@ -1,7 +1,7 @@
 import { toDoSchema } from "./FormValidationToDo";
 import UseToastAxios from "./UseToastAxios";
 
-const handleFormToDo = async (data: { title: string; content: string }, userId: string) => {
+const handleFormToDo = async (data: { title: string; content: string }, userId: number) => {
   console.log("Datanya adalah: ", data);
 
   const dataToValidate = {

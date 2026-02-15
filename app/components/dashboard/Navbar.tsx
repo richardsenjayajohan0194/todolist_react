@@ -1,15 +1,18 @@
-'use client'
-import { UseUserSession } from "../global/UseUserSession";
 import NavbarLinks from "./NavbarLinks";
+import 'react-loading-skeleton/dist/skeleton.css'; 
 import UserMenu from "./UserMenu";
 import { memo } from "react";
+// import dynamic from "next/dynamic";
+
 
 const Navbar = () => {
 
-  // const userContext = useContext(UserSessionContext);
-  // console.log("Navbar Rendered", userContext?.session?.user);
-  const { session } = UseUserSession();
-  console.log("Navbar Rendered", session?.user);
+//   const LazyUserMenu = dynamic(() => import("./UserMenu"), {
+//   ssr: true,
+//   loading: () => <p>Loading...</p>, // Optional fallback
+// });
+
+  console.log("Navbar Rendered");
 
   // Removed useEffect referencing undefined userContext
 

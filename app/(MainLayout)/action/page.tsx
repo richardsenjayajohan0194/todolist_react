@@ -1,32 +1,28 @@
-"use client";
 
-import { useForm } from "react-hook-form";
+"use client";
+import { SubmitHandler, useForm } from "react-hook-form"; // Add useEffect if not already imported
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
-import { UseUserSession }  from "@/app/components/global/UseUserSession";
 import { FormSchema, toDoSchema } from "@/app/components/main_layout/FormValidationToDo";
 import handleFormToDo from "@/app/components/main_layout/HandleFormToDo";
 import FormToDo from "@/app/components/main_layout/FormToDo";
 import HeaderForm from "@/app/components/global/HeaderForm";
 import InputField from "@/app/components/global/InputField";
 import Button from "@/app/components/global/Button";
-import { memo, useEffect } from "react";
+import { memo, useEffect} from "react";
+// import { UseUserSession } from "@/app/components/dashboard/UserInfo";
 
 const Action = () => {
-  console.log("Action Rendered");
-  const { isLoading, userId, isAuthenticated } = UseUserSession();
+  console.log("Form Action Rendered");
+  // const { isLoading, userId, isAuthenticated } = UseUserSession();
 
-  useEffect(() => {
-    // Effect for handling session changes if needed
-  }, [isLoading, userId, isAuthenticated]);
+  // useEffect(() => {
+  //   // Effect for handling session changes if needed
+  // }, [isLoading, userId, isAuthenticated]);
 
-  // Construct default values conditionally
-  const defaultValues = {
-    title: "",
-    content: "",
-  };
-
+ //Construct default values conditionally
+ 
   const {
     register,
     handleSubmit,
@@ -34,15 +30,17 @@ const Action = () => {
     formState: { errors },
   } = useForm<FormSchema>({
     resolver: zodResolver(toDoSchema), // Use Zod schema for validation
-    defaultValues,
     reValidateMode: "onSubmit",
   });
 
+   useEffect(() => {
+  },[register, handleSubmit]);
+
   //For Register Account
-  const onSubmit = async (data: FormSchema) => {
+  const onSubmit: SubmitHandler<FormSchema> = async (data) => {
     console.log("Form Data:", data);
     
-    const res = await handleFormToDo(data, "1");
+    const res = await handleFormToDo(data, 1);
 
     if (res && "error" in res) {
       console.log("Validation error: ", res.error);
@@ -54,26 +52,26 @@ const Action = () => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="add-content bg-success vh-100 d-flex justify-content-center align-items-center p-2">
-        <div>Loading...</div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="add-content bg-success vh-100 d-flex justify-content-center align-items-center p-2">
+  //       <div>Loading...</div>
+  //     </div>
+  //   );
+  // }
 
-  if (!isAuthenticated) {
-    return (
-      <div className="add-content bg-success vh-100 d-flex justify-content-center align-items-center p-2">
-        <div>Please log in to access the dashboard.</div>
-      </div>
-    );
-  }
+  // if (!isAuthenticated) {
+  //   return (
+  //     <div className="add-content bg-success vh-100 d-flex justify-content-center align-items-center p-2">
+  //       <div>Please log in to access the dashboard.</div>
+  //     </div>
+  //   );
+  // }
 
   return (
-    <>
+    <div className="d-flex flex-fill justify-content-center align-items-center h-100%">
       <FormToDo onSubmit={handleSubmit(onSubmit)}>
-        <div className="display row bg-white align-items-center d-flex">
+        <div className="display row bg-white align-items-center">
           <HeaderForm
             className="header d-flex justify-content-center"
             tag_header="h1"
@@ -100,13 +98,13 @@ const Action = () => {
           </div>
 
           <Button
-            classname="button_submit d-flex justify-content-center mt-3 mb-3"
+            classname="button_submit d-flex justify-content-center mt-3"
             button_name="Submit"
           />
         </div>
       </FormToDo>
       <ToastContainer />
-    </>
+    </div>
   );
 };
 

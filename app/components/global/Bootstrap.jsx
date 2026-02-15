@@ -1,6 +1,7 @@
 "use client"
 import { useEffect } from "react"
 
+
 const Bootstrap = () => {
     console.log("Bootstrap component loaded");
     useEffect(() => {

@@ -1,63 +1,59 @@
-"use client";
+// import { ToastContainer } from "react-toastify";
+// import DataTable from "./data-table";
 
-import axios from "axios";
-import { ToDoList } from "./columns";
-// If 'columns' is exported from './columns', import it from there:
-// import { DataTable } from "./data-table";
-import { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
-import DataTable from "./data-table";
+// import { fetchToDos } from "@/app/components/dashboard/ServerFetch";
+// import ToastServer from "@/app/components/main_layout/ToastServer";
+// import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const Preview = () => {
+import DataTableWrapper from "./data-table-wrapper";
+// import getQueryClient from "@/utils/getQueryClient";
+import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import MaxPageFilter from "./MaxPageFilter";
+import SelectedItemsPageProvider from "./SelectedItemsPageProvider";
+import PageController from "./PageController";
+// Make sure that PageController is a React component that returns JSX.
+// import getQueryClient from "@/utils/getQueryClient";
+
+const Preview = async () => {
   console.log("Preview Page has been render");
-  // const rowPerPage = 10;
-  const [data, setData] = useState<ToDoList[]>([]);
-  const [loading, setLoading] = useState(true);
-  // const [startIndex, setStartIndex] = useState(0);
-  // const [endIndex, setEndIndex] = useState(rowPerPage);
 
-  useEffect(() => {
-    
-    async function fetchData() {
-      try {
-        const response = await axios.get<ToDoList[]>(
-          "http://localhost:3001/preview",
-          { withCredentials: true }
-        );
-        const res = await response.data;
-        console.log("Response Data: ", res);
-        setData(res);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        const toastId = toast.loading("Loading...");  
-        if (axios.isAxiosError(error)) {
-          console.log("Axios error:", error.message);
-          toast.update(toastId, {
-            render: error.message,
-            type: "error",
-            isLoading: false,
-            autoClose: 3000,
-          });
-        } else {
-          console.log("Unexpected error:", error);
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
-  },[]);
+  // const data = await getServerSideProps();
+  // console.log("res data: ", data);
+
+  // const queryClient =  getQueryClient();
+  // const data= await queryClient.prefetchQuery({queryKey: ['todos'],queryFn: fetchToDos});
+  // console.log("data await: ",data);
+  // const dehydratedState = dehydrate(queryClient);
+  // console.log("Dehydrated State: ",dehydratedState);
   
-
-  console.log("Datanya adalah: ", typeof data);
-
-  if (loading) return <div className="vh-100 d-flex justify-content-center align-items-center p-2">Loading...</div>
-
   return (
-    <div className="tw-container tw-mx-auto tw-py-10">
-      <DataTable data={data}/>
-      <ToastContainer />
+    <div className="d-flex flex-fill align-items-center justify-content-center">
+      <div className="tw-container tw-mx-auto tw-py-2 tw-bg-white border rounded-3 shadow-lgt tw-min-h-max-[75vh]">
+        {/* <HydrationBoundary state={dehydratedState}> */}
+        <SelectedItemsPageProvider>
+          <div className="d-flex flex-column justify-content-end tw-pl-2 tw-pr-2">
+            <MaxPageFilter/>
+          </div>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Id</TableHead>
+                <TableHead>Title</TableHead>
+                <TableHead>Content</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <DataTableWrapper/>
+          </Table>
+          <PageController/>
+          <ReactQueryDevtools initialIsOpen={false} />
+          {/* </HydrationBoundary> */}
+          </SelectedItemsPageProvider>
+      </div>
     </div>
+    
   );
 };
 
