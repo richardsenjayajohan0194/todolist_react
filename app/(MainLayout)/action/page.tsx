@@ -69,17 +69,17 @@ const Action = () => {
   // }
 
   return (
-    <div className="d-flex flex-fill justify-content-center align-items-center h-100%">
+    <div className="tw-flex tw-justify-center tw-items-center tw-h-full">
       <FormToDo onSubmit={handleSubmit(onSubmit)}>
-        <div className="display row bg-white align-items-center">
+        <div className="tw-bg-white tw-items-center d-flex tw-flex-col tw-p-5 tw-rounded tw-w-full">
           <HeaderForm
-            className="header d-flex justify-content-center"
+            className="header tw-flex tw-justify-center"
             tag_header="h1"
             header="Todo List Action"
           />
-          <div className="content-field">
+          <div className="content-field tw-flex tw-flex-col tw-w-full">
             <InputField
-              classname="title-field"
+              classname="title-field tw-flex tw-flex-col tw-w-full"
               register={register("title")}
               name="title"
               label="Title"
@@ -88,7 +88,7 @@ const Action = () => {
               area={false}
             />
             <InputField
-              classname="content-field"
+              classname="content-field tw-flex tw-flex-col tw-w-full tw-mt-3"
               register={register("content")}
               label="Content"
               placeholder="Content"
@@ -98,7 +98,7 @@ const Action = () => {
           </div>
 
           <Button
-            classname="button_submit d-flex justify-content-center mt-3"
+            classname="button_submit tw-flex tw-justify-center tw-mt-3"
             button_name="Submit"
           />
         </div>

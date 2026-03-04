@@ -25,7 +25,7 @@ const InputField = ({ label, placeholder, register, area, error, name, classname
 
     return (
       <div className={classname}>
-        <label>{label}</label>
+        <label className="tw-form-label">{label}</label>
         {area === false ? (
           <input
             {...register}
@@ -33,17 +33,17 @@ const InputField = ({ label, placeholder, register, area, error, name, classname
             // type={type}
             value={value}
             placeholder={placeholder}
-            className="form-control"
+            className="tw-form-control tw-w-full tw-px-3 tw-py-2 tw-border tw-rounded"
           />
         ) : (
           <textarea
             {...register}
             value={value}
             placeholder={placeholder}
-            className="form-control h-50"
+            className="tw-form-control tw-w-full tw-px-3 tw-py-2 tw-border tw-rounded tw-h-20"
           />
         )}
-        {error && <small className="text-danger">{error}</small>}
+        {error && <small className="tw-text-red-500">{error}</small>}
       </div>
     );
   };
