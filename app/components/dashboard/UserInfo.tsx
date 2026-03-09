@@ -1,7 +1,7 @@
 "use client";
 
 import { signOut, useSession } from 'next-auth/react';
-import { createContext, memo, useCallback, useContext, useMemo } from 'react';
+import { createContext, useCallback, useContext, useMemo } from 'react';
 
 interface Props {
   children: React.ReactNode;
