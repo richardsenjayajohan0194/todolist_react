@@ -10,11 +10,11 @@ interface Props {
 const FormLoginRegister = ({ children, page_status, onSubmit }: Props) => {
   return (
     <div className="template tw-flex tw-justify-center tw-items-center tw-h-screen tw-bg-blue-500">
-      <div className="tw-w-[45] tw-p-12 tw-rounded tw-bg-white">
+      <div className="tw-w-[325] tw-p-12 tw-rounded tw-bg-white">
         {page_status === true ? (
-          <HeaderForm tag_header="h1" header={"Login"} />
+          <HeaderForm tag_header="h1" header={"Login"}  className="tw-text-3xl tw-font-bold tw-pb-2"/>
         ) : (
-          <HeaderForm tag_header="h1" header={"Register"} />
+          <HeaderForm tag_header="h1" header={"Register"} className="tw-text-3xl tw-font-bold tw-pb-2"/>
         )}
         <form onSubmit={onSubmit}>{children}</form>
         {page_status === true ? (

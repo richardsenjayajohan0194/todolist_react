@@ -20,8 +20,8 @@ const Dashboard = async () => {
         </div>
       </div> */}
       <div className="tw-p-5">
-        <HeaderForm tag_header="h1" header={`Todo List App`}/>
-        <HeaderForm tag_header="h5" header={`Welcome, ${session?.user.name}`}/>
+        <HeaderForm tag_header="h1" className="tw-text-4xl tw-font-bold" header={`Todo List App`}/>
+        <HeaderForm tag_header="h5"  className="tw-text-xl" header={`Welcome, ${session?.user.name}`}/>
       </div>
      </>
    );

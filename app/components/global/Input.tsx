@@ -43,10 +43,10 @@ const Input = ({
         type={type}
         name={name_input || type} // Use type as default if name_input is not provided
         placeholder={placeholder}
-        className="form-control"
+        className="tw-form-control tw-w-full tw-px-3 tw-py-2 tw-border tw-rounded"
         onChange={handleChange} // Only assign handleChange if not disabled
       />
-      {error && <small className="text-danger">{error}</small>} {/* Display error message */}
+      {error && <small className="tw-text-red">{error}</small>} {/* Display error message */}
     </div>
   );
 };

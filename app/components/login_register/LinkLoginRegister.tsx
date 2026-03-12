@@ -11,7 +11,7 @@ const LinkLoginRegister = ({src, sentence, link_sentence}: Props) => {
       <>
       <p className="tw-text-center">
         <small className="tw-block tw-text-center tw-mt-2">
-          {sentence} <Link href={src}>{link_sentence}</Link>
+          {sentence} <Link href={src} className="tw-text-blue-500 tw-underline">{link_sentence}</Link>
         </small>
       </p>
       </>

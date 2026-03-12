@@ -98,7 +98,7 @@ const Action = () => {
           </div>
 
           <Button
-            classname="button_submit tw-flex tw-justify-center tw-mt-3"
+            classname="tw-flex tw-align-center tw-justify-center tw-mt-2"
             button_name="Submit"
           />
         </div>

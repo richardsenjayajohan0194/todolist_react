@@ -181,7 +181,8 @@ const IndexLoginRegister = ({ page_status }: Props) => {
           />
         )}
       />
-      <ButtonLoginRegister classname="d-grid mt-2" button_name={"Register "}/>
+
+      {page_status === false ? (<ButtonLoginRegister classname="tw-flex tw-align-center tw-justify-center tw-mt-2" button_name={"Register "}/>) : (<ButtonLoginRegister classname="tw-flex tw-align-center tw-justify-center tw-mt-2" button_name={"Login "}/>)}
     </FormLoginRegister>
   );
 };

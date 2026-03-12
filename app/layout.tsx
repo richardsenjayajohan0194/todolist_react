@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AuthProvider } from "@/libs/auth-libs";
 import "../style/globals.css";
-import "../style/globals.scss";
-import Bootstrap from '@/app/components/global/Bootstrap'
+// import "../style/globals.scss";
+// import Bootstrap from '@/app/components/global/Bootstrap'
 import Providers from "@/utils/provider";
 // import UserInfo from "./components/dashboard/UserInfo";
 // import Authpage from "./authpage/page";
@@ -30,7 +30,7 @@ interface Props {
 export default function RootLayout({children}:Props) {
   return (
     <html lang="en">
-        <Bootstrap/>
+        {/* <Bootstrap/> */}
         <AuthProvider>
           <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
             <Providers>{children}</Providers>
