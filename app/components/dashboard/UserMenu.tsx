@@ -6,7 +6,11 @@ import { UseUserSession } from "./UserInfo";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChevronDownIcon, LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
 
-const UserMenu = () => {
+interface Props{
+  isMenuOpen?: boolean;
+}
+
+const UserMenu = ({isMenuOpen}:Props) => {
   const { session, status, handleSignOut } = UseUserSession();
 
   return (
@@ -43,7 +47,7 @@ const UserMenu = () => {
       
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <div className="tw-hidden tw-gap-1 sm:tw-flex tw-text-white">
+          <div className={`${isMenuOpen ? 'tw-flex tw-items-center tw-justify-center' : 'tw-hidden'} tw-gap-1 sm:tw-flex tw-text-white`}>
             {status === "loading" ? (
             <Skeleton   width="150px" height="20px" />
           ) : (
