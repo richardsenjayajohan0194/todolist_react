@@ -3,7 +3,6 @@
 import HeaderForm from "@/app/components/global/HeaderForm";
 // import  { UseUserSession }  from "@/app/components/global/UseUserSession";
 import { getServerSession } from "next-auth";
-import 'react-loading-skeleton/dist/skeleton.css'; 
 
 const Dashboard = async () => {
   const session = await getServerSession();
