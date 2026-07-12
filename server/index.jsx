@@ -5,13 +5,12 @@ const cors = require('cors');
 const expressSession = require('express-session');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
-const next = require('next');
-const NextAuth = require('next-auth').default;
-const { PrismaClient } = require('@prisma/client');
+// const next = require('next');
+// const NextAuth = require('next-auth').default;
+const  prisma = require('db/index');
 // const { authOptions } = require('../app/api/auth/[...nextauth]/options.jsx'); // We'll create this file next
 
 const app = express();
-const prisma = new PrismaClient();
 const PORT = 3001;
 
 // Middleware setup
