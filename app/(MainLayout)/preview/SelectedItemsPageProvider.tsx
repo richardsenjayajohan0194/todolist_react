@@ -23,7 +23,7 @@ interface SelectedItemsContextType {
 export const SelectedItemsContext = createContext<SelectedItemsContextType | null>(null);
 
 function SelectedItemsPageProvider({children}: Props) {
-  const [maxPerPage, setMaxPerPage] = useState({limit: 5, page: 1}); // Default to 5; can be 5, 10, or 15
+  const [maxPerPage, setMaxPerPage] = useState({limit: 10, page: 1}); // Default to 5; can be 5, 10, or 15
   
   const {data: todos, status, isError, error, refetch} = useQuery({
     queryKey: ['todos', maxPerPage], 
@@ -38,7 +38,7 @@ function SelectedItemsPageProvider({children}: Props) {
   });
 
   const changeMaxPerPage = (newMax: number, page?: number) => {
-    if([5, 10].includes(newMax)){
+    if([10, 15].includes(newMax)){
         setMaxPerPage({limit: newMax, page: page ?? 1});
         console.log("Max per page changed to:", newMax);
     }

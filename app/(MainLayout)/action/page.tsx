@@ -69,9 +69,9 @@ const Action = () => {
   // }
 
   return (
-    <div className="tw-flex tw-justify-center tw-items-center tw-h-full">
+    <div className="tw-flex tw-justify-center tw-items-center tw-flex-grow">
       <FormToDo onSubmit={handleSubmit(onSubmit)}>
-        <div className="tw-bg-white tw-items-center d-flex tw-flex-col tw-p-5 tw-rounded tw-w-full">
+        <div className="tw-bg-white tw-p-5 tw-rounded">
           <HeaderForm
             className="header tw-flex tw-justify-center"
             tag_header="h1"

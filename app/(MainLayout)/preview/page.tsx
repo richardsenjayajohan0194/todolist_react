@@ -28,7 +28,7 @@ const Preview = async () => {
   // console.log("Dehydrated State: ",dehydratedState);
   
   return (
-    <div className="tw-flex tw-items-center tw-justify-center tw-h-full">
+    <div className="tw-flex tw-justify-center tw-items-center tw-flex-grow tw-my-20">
       <div className="tw-container tw-mx-auto tw-py-2 tw-bg-white border rounded-3 shadow-lgt tw-min-h-max-[75vh]">
         {/* <HydrationBoundary state={dehydratedState}> */}
         <SelectedItemsPageProvider>

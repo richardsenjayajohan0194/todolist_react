@@ -1,5 +1,4 @@
 import { TableCell, TableRow } from '@/components/ui/table';
-import React from 'react'
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 
@@ -8,7 +7,7 @@ interface Props{
     rowPerPage?: number;
 }
 
-function DataTableSkeletonWrapper({rowPerPage = 5}: Props) {
+function DataTableSkeletonWrapper({rowPerPage = 10}: Props) {
   return (
     Array.from({ length: rowPerPage }).map((_, index) => (
       <TableRow key={index}>

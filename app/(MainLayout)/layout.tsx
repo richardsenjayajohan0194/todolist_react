@@ -39,7 +39,7 @@ const Layout = async ({ children }: Props) => {
     // }
     
     return (
-        <div className="layout-content tw-bg-green-100 tw-h-screen tw-flex tw-flex-col">
+        <div className="layout-content tw-bg-green-100 tw-h-full tw-flex tw-flex-col tw-min-h-screen">
             <UserInfo>
                 {/* <LazyNavbar />  Use LazyNavbar instead of Navbar */}
                 <Navbar/>
