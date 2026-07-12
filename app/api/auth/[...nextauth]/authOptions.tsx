@@ -1,7 +1,7 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import  prisma  from  "../../../../db/index"; // Adjust the path as needed
 import authConfig from "./auth.config";
-import { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 
 const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),

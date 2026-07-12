@@ -1,14 +1,10 @@
 // server.js
 const express = require('express');
-const bodyParser = require('body-parser');
+const prisma = require("../db/index.jsx");
 const cors = require('cors');
 const expressSession = require('express-session');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
-// const next = require('next');
-// const NextAuth = require('next-auth').default;
-const  prisma = require('db/index');
-// const { authOptions } = require('../app/api/auth/[...nextauth]/options.jsx'); // We'll create this file next
 
 const app = express();
 const PORT = 3001;
@@ -19,7 +15,7 @@ app.use(cors({
     credentials: true,
 })); // Enable CORS
 app.use(express.json()); // Parse JSON bodies
-app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(cookieParser()); // Parse cookies
 app.use(expressSession({
     secret: 'your-secret-key', // Replace with a strong secret
